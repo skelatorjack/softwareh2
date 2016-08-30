@@ -1,0 +1,181 @@
+<!--
+Jack Pettit
+August 24, 2016
+CS 4500
+HW1
+-->
+<html>
+   <head>
+     <title> Homework 1 </title>
+   </head>
+   <body>
+    <script>
+    // This where the game is played.
+    function playGame()
+    {
+      var marker = {xCord:0, yCord:9};               // This marker
+      var numberOfVisits = createArray();            // 2d array that holds the number of visits to each space.
+      var stepsTaken = 0;                            // Checks how many moves have been made
+
+      while (true) {
+        // Check if there have been 1,000,000 steps and the marker is at (9,0).
+        if (stepsTaken == 1000000 && marker.xCord == 9 && marker.yCord == 0) {
+             displayResults(1, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
+             break;
+        }
+        // Check if there have been only 1,000,000 steps taken.
+        else if (stepsTaken == 1000000) {
+             displayResults(2, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
+             break;
+        }
+        // Check if the marker is at (9,0) only.
+        else if (marker.xCord == 9 && marker.yCord == 0) {
+             displayResults(3, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
+             break;
+        }
+        // Otherwise play the game.
+        else {
+             switch (chooseDirection()) {
+                case 1:
+                   moveMarkerLeft(marker);
+                   numberOfVisits[marker.xCord][marker.yCord]++;
+                   break;
+                case 2:
+                   moveMarkerUp(marker);
+                   numberOfVisits[marker.xCord][marker.yCord]++;
+                   break;
+                case 3:
+                   moveMarkerRight(marker);
+                   numberOfVisits[marker.xCord][marker.yCord]++;
+                   break;
+                case 4:
+                   moveMarkerDown(marker);
+                   numberOfVisits[marker.xCord][marker.yCord]++;
+                   break;
+                default:
+                   document.write("Not valid<br>");
+             }
+             stepsTaken++;
+             document.write("Marker at position " + "(" + marker.xCord + "," + marker.yCord + ")<br>");
+        }
+      }
+    }
+    // Randomly return a number between 1 to 4.
+    function chooseDirection()
+    {
+      return Math.floor (1 + (Math.random() * 4));
+    }
+    // Move the marker up one space.
+    function moveMarkerUp(marker)
+    {
+      if (marker.yCord > 0) {
+        marker.yCord -= 1;
+      }
+    }
+    // Move the marker down one space.
+    function moveMarkerDown(marker)
+    {
+      if (marker.yCord < 9) {
+        marker.yCord += 1;
+      }
+    }
+    // Move the marker left one space.
+    function moveMarkerLeft(marker)
+    {
+      if (marker.xCord > 0) {
+        marker.xCord -= 1;
+      }
+    }
+    // Move the marker right one space.
+    function moveMarkerRight(marker)
+    {
+      if (marker.xCord < 9) {
+        marker.xCord += 1;
+      }
+    }
+    /*
+    Find the biggest number of spaces visited.
+    visits is a 2d array that holds all the visits
+    */
+    function findMaxVisits(visits)
+    {
+      var max = 0;
+
+      for (var i = 0; i < visits.length; i++) {
+        for (var j = 0; j < visits[i].length; j++) {
+          if (visits[i][j] > max) {
+            max = visits[i][j];
+          }
+        }
+      }
+      return max;
+    }
+    /*
+    Find the smallest number of spaces visited.
+    Visits is a 2d array that holds all the visits.
+    */
+    function findMinVisits(visits)
+    {
+      var min = 0;
+
+      for (var i = 0; i < visits.length; i++) {
+        for (var j = 0; j < visits[i].length; j++) {
+          if (visits[i][j] < min) {
+            min = visits[i][j];
+          }
+        }
+      }
+      return min;
+    }
+    // Create an empty 2d array.
+    function createArray()
+    {
+      var moves = new Array(10);
+
+      for (var i = 0; i < moves.length; i++) {
+        moves[i] = new Array(10);
+      }
+      moves = initalizeArray(moves);
+      return moves;
+    }
+    // Populate the 2d array with 0s.
+    function initalizeArray(visits)
+    {
+      for (var i = 0; i < visits.length; i++) {
+        for (var j = 0; j < visits[i].length; j++) {
+           visits[i][j] = 0;
+        }
+      }
+      return visits;
+    }
+    // Display why the game terminated, how many steps were taken,
+    // the maximum number of steps taken, and the minimum number of steps taken.
+    function displayResults(reasonForTerm, stepsTaken, max, min)
+    {
+      document.write("<br> Results <br>");
+      document.write("==========================================================<br>");
+      switch(reasonForTerm) {
+        case 1:
+           document.write("Upper right corner reached and maximum number of steps taken.<br>");
+           document.write("The number of steps taken: " + stepsTaken + "<br>");
+           document.write("The maximum number of moves into a cell: " + max + "<br>");
+           document.write("The minimum number of moves into a cell: " + min + "<br>");
+           break;
+        case 2:
+           document.write("Too many steps taken.<br>");
+           document.write("The number of steps taken: " + stepsTaken + "<br>");
+           document.write("The maximum number of moves into a cell: " + max + "<br>");
+           document.write("The minimum number of moves into a cell: " + min + "<br>");
+           break;
+        case 3:
+           document.write("Upper right corner reached.<br>");
+           document.write("The number of steps taken: " + stepsTaken + "<br>");
+           document.write("The maximum number of moves into a cell: " + max + "<br>");
+           document.write("The minimum number of moves into a cell: " + min + "<br>");
+           break;
+      }
+    }
+    playGame();
+    </script>
+   </body>
+</html>
