@@ -19,20 +19,57 @@ HW1
      <p id="max"></p>
      <p id="min"></p>
      <!--<canvas id="boardCanvas" width="500" height="500" style="border:3px solid #000000;">-->
-    <!--
+
     <script>
     // This where the game is played.
 
 
-    var myCanvas = document.getElementById("boardCanvas");           // used for the board
-    var ctx = myCanvas.getContext("2d");                             // make the board 2d
-    ctx.strokeStyle = 'black';                                       // set the outline black
+    //var myCanvas = document.getElementById("boardCanvas");           // used for the board
+    //var ctx = myCanvas.getContext("2d");                             // make the board 2d
+    //ctx.strokeStyle = 'black';                                       // set the outline black
     var MAX_STEPS = 1000000;                                         // Maximum number of steps allowed in the game
-    var MAX_ROW = 10;                                                // Maximum number of rows on the grid
-    var MAX_COL = 10;                                                // Maximum number of columns on the grid
+    var MAX_ROW = parseInt(prompt("Enter the maximum number of rows, it must be an integer, not blank, or greater than zero", "10"), 10);                                                // Maximum number of rows on the grid
+    var MAX_COL = parseInt(prompt("Enter the maximum number of columns,  it must be an integer, not blank, or greater than zero", "10"), 10);                                                // Maximum number of columns on the grid
     var MIN_ROW = 0;                                                 // Minimum number of rows on the grid
     var MIN_COL = 0;
+    var numberOfRuns = parseInt(prompt("Enter the number of runs,  it must be an integer, not blank, or greater than zero", "1"), 10);
+    var stepsPerGame = [];
+    var maxVisitsPerGame = [];
+    var minVisitsPerGame = [];
 
+    //document.write("The max rows, cols, and runs integers: " + isInteger(MAX_ROW) + " " + isInteger(MAX_COL) + " " + isInteger(numberOfRuns));
+
+
+    while(true) {
+      if (!isInteger(MAX_ROW) || MAX_ROW < 1) {
+        MAX_ROW = parseInt(prompt("Enter the maximum number of rows, it must be an integer, not blank, or greater than zero", "10"), 10);
+      }
+      else if (!isInteger(MAX_COL) || MAX_COL < 1) {
+        MAX_COL = parseInt(prompt("Enter the maximum number of columns,  it must be an integer, not blank, or greater than zero", "10"), 10);
+      }
+      else if (!isInteger(numberOfRuns) || numberOfRuns < 1) {
+        numberOfRuns = parseInt(prompt("Enter the number of runs,  it must be an integer, not blank, or greater than zero", "1"), 10);
+      }
+      else {
+        break;
+      }
+    }
+
+    //document.write("The max rows, cols, and runs integers: " + MAX_ROW + " " + MAX_COL + " " + numberOfRuns);
+
+    function isInteger(x)
+    {
+      return (typeof x === 'number') && (x % 1 === 0);
+    }
+    function getAverageSteps()
+    {
+      var average = 0;
+
+      for (var i = 0; i < stepsPerGame.length; i++) {
+        average += stepsPerGame[i]
+      }
+      return average / numberOfRuns;
+    }
     function playGame()
     {
       var xVal = -1;                                                   // holds the old x value of the marker
@@ -44,27 +81,32 @@ HW1
       var marker = {xCord: MAX_ROW - 1, yCord: MIN_ROW};               // This marker is set at the lower left corner (9, 0)
 
       // Draw the initial able with the marker placed at the bottom left corner.
-      drawTable(marker, xVal, yVal);
+      //drawTable(marker, xVal, yVal);
 
       while (true) {
         // If there is a valid move call draw table
+        /*
         if (doRedraw) {
          setTimeout(drawTable, (stepsTaken * 50), marker, xVal, yVal);
         }
+        */
 
         // Check if there have been 1,000,000 steps and the marker is at (0,9) the upper right corner.
         if (stepsTaken == MAX_STEPS && marker.xCord == MIN_ROW && marker.yCord == MAX_ROW - 1) {
+             stepsPerGame.push(stepsTaken);
              displayResults(1, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
         }
         // Check if there have been only 1,000,000 steps taken.
         else if (stepsTaken == MAX_STEPS) {
-             displayResults(2, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
-             break;
+          stepsPerGame.push(stepsTaken);
+          displayResults(2, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
+          break;
         }
         // Check if the marker is at (9,0) only.
         else if (marker.xCord == MIN_ROW && marker.yCord == MAX_ROW - 1) {
-            displayResults(3, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
-             break;
+          stepsPerGame.push(stepsTaken);
+          displayResults(3, stepsTaken, findMaxVisits(numberOfVisits), findMinVisits(numberOfVisits));
+          break;
         }
         // Otherwise play the game.
         else {
@@ -235,6 +277,7 @@ HW1
       }
     }
     // draw the table that will be used to represent where the marker moved during the game.
+    /*
     function drawTable(marker, xVal, yVal)
     {
       for (var row = 0; row < MAX_ROW; row++) {
@@ -257,8 +300,15 @@ HW1
         }
       }
     }
-    playGame();
+    */
+    for (var z = 0; z < numberOfRuns; z++) {
+      playGame();
+    }
+    for (var b = 0; b < stepsPerGame.length; b++) {
+      document.write(stepsPerGame[b] + " <br>");
+    }
+    document.write("The average number of steps taken in " + numberOfRuns + " is: " + getAverageSteps());
     </script>
-  -->
+
    </body>
 </html>

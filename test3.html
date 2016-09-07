@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+    /*
+      for (var i = 0; i < 2; i++) {
+        var canvas = document.createElement('canvas');
+        canvas.id = "myCanvas" + i;
+        canvas.width = 500;
+        canvas.height = 500;
+        canvas.style.border = "1px solid";
+
+        if (i == 1) {
+          canvas.style.border = "10px solid";
+        }
+        document.body.appendChild(canvas);
+      }
+    */
+    var rows = 0;
+    var cols = 0;
+
+    rows = parseInt(prompt("Enter the number of rows.", "1"), 10);
+    cols = parseInt(prompt("Enter the number of cols.", "1"), 10);
+
+    var canvas = document.createElement('canvas');
+    canvas.id = "myCanvas";
+    canvas.width = rows * 50;
+    canvas.height = cols * 50;
+    canvas.style.border = "1px solid";
+    //canvas.style.fillStyle = "black";
+    //canvas.fillRect(0, 0, rows * 50, cols * 50);
+    /*
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+        var x = j * 50;
+        var y = i * 50;
+      }
+      canvas.fillRect(x, y, 50, 50);
+    }
+    */
+    //document.body.appendChild(canvas);
+    var something = document.getElementById("myCanvas");
+    var ctx = something.getContext("2d");
+    ctx.fillStyle = "blue";
+    ctx.strokeRect(x, y, 50, 50);
+    ctx.fillRect(x, y, rows * 50, cols * 50);
+    
+    </script>
+  </body>
+</html>
